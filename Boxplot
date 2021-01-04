@@ -1,0 +1,53 @@
+movie <- read.csv(file.choose())
+movie
+head(movie)
+summary(movie)
+str(movie)
+
+#filer data 
+
+filt <- (movie$Genre == 'action') | (movie$Genre == 'adventure') | (movie$Genre == 'animation') | (movie$Genre == 'comedy') | (movie$Genre == 'drama')
+filt1 <- movie$Studio %in% c("Buena Vista Studios", "WB", "Fox", "Universal", "Sony","Paramount Pictures")
+
+movie2 <- movie[filt & filt1, ]
+head(movie2)
+
+#creating base for plot
+
+plot <-
+  ggplot(data=movie2, aes(x=Genre, y=Gross...US)) + 
+  geom_jitter(aes(size = Budget...mill., color=Studio)) +
+  geom_boxplot(alpha=0.7, outlier.colour = NA)
+
+
+#renaming + formating labels and title
+plot +
+  xlab("Genre") + 
+  ylab("Gross % US") +
+  ggtitle("Domestic Gross % by Genre") +
+  theme(axis.title.x = element_text(color="Blue", size = 15), 
+        axis.title.y = element_text(color="Blue", size = 15),
+        
+        plot.title = element_text(color="Black", 
+                          size = 20,)
+        )
+
+#naming correction
+plot$labels$size <- "Budget $M"
+
+#formating legend
+plot +
+  xlab("Genre") + 
+  ylab("Gross % US") +
+  ggtitle("Domestic Gross % by Genre") +
+  theme(axis.title.x = element_text(color="Blue", size = 15), 
+        axis.title.y = element_text(color="Blue", size = 15),
+        
+        plot.title = element_text(color="Black", 
+                                  size = 20),
+        
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 10),
+        
+        text = element_text(family="Comic Sans MS")
+        )
